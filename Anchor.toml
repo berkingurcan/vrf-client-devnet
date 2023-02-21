@@ -1,15 +1,15 @@
 [features]
 seeds = false
 skip-lint = false
-[programs.localnet]
-vrf_client = "EmPZGD34KDCtdwtqJU5VGoqidDQLyW1eyBXvj4yb2W9i"
+[programs.devnet]
+vrf_client = "EmEvpcSsVwZ3VVuQEKiqiGNBYEDy52TBVz1WULdccjzA"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
-wallet = "~/.config/solana/id.json"
+cluster = "devnet"
+wallet = "~/.config/solana/devnet-test.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
