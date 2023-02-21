@@ -69,7 +69,6 @@ describe("vrf-client", async () => {
     console.log(`Transaction signature of queue Account: ${txnSignature}`)
   
     const queue = await queueAccount.loadData();
-    console.log(`queue: ${queue}`)
   
     const [vrfAccount] = await VrfAccount.create(switchboard, {
       vrfKeypair: vrfSecret,
@@ -90,7 +89,6 @@ describe("vrf-client", async () => {
     // Create Switchboard VRF and Permission account
     
     console.log(`Created VRF Account: ${vrfAccount.publicKey}`);
-    console.log(vrfAccount)
   
     // Create VRF Client account
     // INIT CLIENT
@@ -115,19 +113,21 @@ describe("vrf-client", async () => {
     console.log(`WTF is vrf ${vrf}`);
   
     // derive the existing VRF permission account using the seeds
+    console.log("permission is coming")
     const [permissionAccount, permissionBump] = sbv2.PermissionAccount.fromSeed(
       switchboard,
       queue.authority,
-      switchboard.programState.publicKey,
+      queueAccount.publicKey,
       vrfAccount.publicKey
     );
-  
+    console.log("permisson is done +++ payer token wallet is coming")
     const [payerTokenWallet] =
       await switchboard.mint.getOrCreateWrappedUser(
         switchboard.walletPubkey,
         { fundUpTo: 0.002 }
       );
   
+    console.log("Requesssstiiiiiing")
     // Request randomness
     await program.methods
       .requestRandomness({
@@ -137,7 +137,7 @@ describe("vrf-client", async () => {
       .accounts({
         state: vrfClientKey,
         vrf: vrfAccount.publicKey,
-        oracleQueue: switchboard.programState.publicKey,
+        oracleQueue: queueAccount.publicKey,
         queueAuthority: queue.authority,
         dataBuffer: queue.dataBuffer,
         permission: permissionAccount.publicKey,
@@ -151,6 +151,8 @@ describe("vrf-client", async () => {
       })
       .rpc();
   
+    console.log("Requested RANDOMNES!")
+
     const result = await vrfAccount.nextResult(
       new anchor.BN(vrf.counter.toNumber() + 1),
       45_000
