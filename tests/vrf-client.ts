@@ -49,7 +49,7 @@ describe("vrf-client", async () => {
       new Connection("https://api.devnet.solana.com"),
       payer /** Optional, READ-ONLY if not provided */
     );
-  
+
     console.log("BERKİNG")
     const [queueAccount, txnSignature] = await QueueAccount.create(switchboard, {
       name: 'My Queue',
@@ -114,14 +114,24 @@ describe("vrf-client", async () => {
   
     // derive the existing VRF permission account using the seeds
     console.log("permission is coming")
-    const [permissionAccount, permissionBump] = PermissionAccount.fromSeed(
+    
+    const permissionAccount = await PermissionAccount.create(
+      switchboard,
+      {
+        granter: queueAccount.publicKey,
+        grantee: vrfAccount.publicKey,
+        authority: queue.authority
+      }
+    );
+
+    const [cumac ,permissionBump] = PermissionAccount.fromSeed(
       switchboard,
       queue.authority,
       queueAccount.publicKey,
       vrfAccount.publicKey
-    );
-    
-    console.log(`permisson is done +++ payer token wallet is coming: ${permissionAccount.publicKey}`)
+    )
+
+    console.log(`permisson is done +++ payer token wallet is coming: ${permissionAccount[0].publicKey}`)
 
     const [payerTokenWallet] =
       await switchboard.mint.getOrCreateWrappedUser(
@@ -143,7 +153,7 @@ describe("vrf-client", async () => {
         oracleQueue: queueAccount.publicKey,
         queueAuthority: queue.authority,
         dataBuffer: queue.dataBuffer,
-        permission: permissionAccount.publicKey,
+        permission: permissionAccount[0].publicKey,
         escrow: vrf.escrow,
         programState: switchboard.programState.publicKey,
         switchboardProgram: switchboard.programId,
