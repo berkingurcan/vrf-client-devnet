@@ -6,7 +6,7 @@ import * as sbv2 from "@switchboard-xyz/solana.js";
 import { VrfClient } from "../target/types/vrf_client";
 import { assert } from "chai";
 import { BN } from "bn.js";
-import { QueueAccount, SwitchboardProgram, VrfAccount } from "@switchboard-xyz/solana.js";
+import { PermissionAccount, QueueAccount, SwitchboardProgram, VrfAccount } from "@switchboard-xyz/solana.js";
 import { Connection } from "@solana/web3.js";
 
 
@@ -114,13 +114,15 @@ describe("vrf-client", async () => {
   
     // derive the existing VRF permission account using the seeds
     console.log("permission is coming")
-    const [permissionAccount, permissionBump] = sbv2.PermissionAccount.fromSeed(
+    const [permissionAccount, permissionBump] = PermissionAccount.fromSeed(
       switchboard,
       queue.authority,
       queueAccount.publicKey,
       vrfAccount.publicKey
     );
-    console.log("permisson is done +++ payer token wallet is coming")
+    
+    console.log(`permisson is done +++ payer token wallet is coming: ${permissionAccount.publicKey}`)
+
     const [payerTokenWallet] =
       await switchboard.mint.getOrCreateWrappedUser(
         switchboard.walletPubkey,
@@ -128,6 +130,7 @@ describe("vrf-client", async () => {
       );
   
     console.log("Requesssstiiiiiing")
+    
     // Request randomness
     await program.methods
       .requestRandomness({
