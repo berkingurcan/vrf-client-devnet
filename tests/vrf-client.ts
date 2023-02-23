@@ -51,7 +51,7 @@ describe("vrf-client", async () => {
     );
 
     console.log("BERKİNG")
-    const [queueAccount, txnSignature] = await QueueAccount.create(switchboard, {
+    /* const [queueAccount, txnSignature] = await QueueAccount.create(switchboard, {
       name: 'My Queue',
       metadata: 'Top secret',
       queueSize: 100,
@@ -68,7 +68,12 @@ describe("vrf-client", async () => {
   
     console.log(`Transaction signature of queue Account: ${txnSignature}`)
   
-    const queue = await queueAccount.loadData();
+    const queue = await queueAccount.loadData(); */
+
+    const [queueAccount, txnSignature] = await QueueAccount.load(switchboard, "F8ce7MsckeZAbAGmxjJNetxYXQa9mKr9nnrC3qKubyYy")
+
+    console.log(`Transaction signature of queue Account: ${txnSignature}`)
+    await queueAccount.isReady();
   
     const [vrfAccount] = await VrfAccount.create(switchboard, {
       vrfKeypair: vrfSecret,
@@ -85,7 +90,7 @@ describe("vrf-client", async () => {
           ""
       ),
       },
-  });
+    });
     // Create Switchboard VRF and Permission account
     
     console.log(`Created VRF Account: ${vrfAccount.publicKey}`);
@@ -108,7 +113,7 @@ describe("vrf-client", async () => {
   
     console.log("Now requestin randomness sectionnnnnn hadi!!!");
     // REQUEST RANDOMNESSSSSSSSSSSSSSSSSSSSSSSSSSSS
-  
+    const queue = await queueAccount.loadData();
     const vrf = await vrfAccount.loadData();
     console.log(`WTF is vrf ${vrf}`);
   
@@ -140,6 +145,8 @@ describe("vrf-client", async () => {
       );
   
     console.log("Requesssstiiiiiing")
+
+    const vrfAccounts = await vrfAccount.fetchAccounts();
     
     // Request randomness
     await program.methods
@@ -150,9 +157,9 @@ describe("vrf-client", async () => {
       .accounts({
         state: vrfClientKey,
         vrf: vrfAccount.publicKey,
-        oracleQueue: queueAccount.publicKey,
-        queueAuthority: queue.authority,
-        dataBuffer: queue.dataBuffer,
+        oracleQueue: "F8ce7MsckeZAbAGmxjJNetxYXQa9mKr9nnrC3qKubyYy",
+        queueAuthority: "2KgowxogBrGqRcgXQEmqFvC3PGtCu66qERNJevYW8Ajh",
+        dataBuffer: "7yJ3sSifpmUFB5BcXy6yMDje15xw2CovJjfXfBKsCfT5",
         permission: permissionAccount[0].publicKey,
         escrow: vrf.escrow,
         programState: switchboard.programState.publicKey,
@@ -170,13 +177,18 @@ describe("vrf-client", async () => {
       new anchor.BN(vrf.counter.toNumber() + 1),
       45_000
     );
+
+    console.log(result)
+
     if (!result.success) {
       throw new Error(`Failed to get VRF Result: ${result.status}`);
     }
   
-    const vrfClientState = await program.account.VrfClientState.fetch(
+    const vrfClientState = await program.account.vrfClientState.fetch(
       vrfClientKey
     );
+    console.log("VRF CLIENT STATE IS COMIIING")
+    console.log(vrfClientState)
   
     console.log(`Vrf client state??? ${vrfClientState}`);
     console.log(`VrfClient Result: ${vrfClientState.result.toString(10)}`);
