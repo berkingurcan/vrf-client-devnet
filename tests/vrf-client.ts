@@ -191,7 +191,8 @@ describe("vrf-client", async () => {
     console.log(vrfClientState)
   
     console.log(`Vrf client state??? ${vrfClientState}`);
-    console.log(`VrfClient Result: ${vrfClientState.result.toString(10)}`);
+    console.log(`Max result: ${vrfClientState.maxResult.toString(10)}`);
+    console.log(`Yamanin agzina yüzüne attirdigim random number: ${vrfClientState.result.toString(10)}`);
   
     const callbackTxnMeta = await vrfAccount.getCallbackTransactions();
     console.log(
