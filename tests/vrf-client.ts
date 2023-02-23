@@ -99,7 +99,7 @@ describe("vrf-client", async () => {
     // INIT CLIENT
     await program.methods
       .initClient({
-        maxResult: new anchor.BN(1337),
+        maxResult: new anchor.BN(678),
       })
       .accounts({
         state: vrfClientKey,
