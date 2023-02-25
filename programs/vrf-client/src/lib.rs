@@ -45,6 +45,7 @@ const STATE_SEED: &[u8] = b"CLIENTSEED";
 pub struct VrfClientState {
     pub bump: u8,
     pub max_result: u64,
+    pub raffle_list: Pubkey,
     pub result_buffer: [u8; 32],
     pub result: u128,
     pub timestamp: i64,
@@ -68,6 +69,7 @@ pub enum VrfClientErrorCode {
 pub struct VrfClientCreated {
     pub vrf_client: Pubkey,
     pub max_result: u64,
+    pub raffle_list: Pubkey,
     pub timestamp: i64,
 }
 
@@ -75,6 +77,7 @@ pub struct VrfClientCreated {
 pub struct RandomnessRequested {
     pub vrf_client: Pubkey,
     pub max_result: u64,
+    pub raffle_list: Pubkey,
     pub timestamp: i64,
 }
 
@@ -82,6 +85,7 @@ pub struct RandomnessRequested {
 pub struct VrfClientUpdated {
     pub vrf_client: Pubkey,
     pub max_result: u64,
+    pub raffle_list: Pubkey,
     pub result_buffer: [u8; 32],
     pub result: u128,
     pub timestamp: i64,

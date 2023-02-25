@@ -7,7 +7,7 @@ import { VrfClient } from "../target/types/vrf_client";
 import { assert } from "chai";
 import { BN } from "bn.js";
 import { PermissionAccount, QueueAccount, SwitchboardProgram, VrfAccount } from "@switchboard-xyz/solana.js";
-import { Connection } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 
 const DEFAULT_COMMITMENT = "confirmed";
 
@@ -84,6 +84,7 @@ describe("vrf-client", async () => {
     await program.methods
       .initClient({
         maxResult: new anchor.BN(678),
+        raffleList: new PublicKey('ExX5yGYjs6BB31wVVNCGW58ewVPMTM7PmghbmZbgptQ'),
       })
       .accounts({
         state: vrfClientKey,
@@ -176,6 +177,7 @@ describe("vrf-client", async () => {
   
     console.log(`Vrf client state??? ${vrfClientState}`);
     console.log(`Max result: ${vrfClientState.maxResult.toString(10)}`);
+    console.log(`Raffle address: ${vrfClientState.raffleList}`)
     console.log(`Yamanin agzina yüzüne attirdigim random number: ${vrfClientState.result.toString(10)}`);
   
     const callbackTxnMeta = await vrfAccount.getCallbackTransactions();

@@ -26,6 +26,7 @@ pub struct InitClient<'info> {
 #[derive(Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct InitClientParams {
     pub max_result: u64,
+    pub raffle_list: Pubkey,
 }
 
 impl InitClient<'_> {
@@ -55,6 +56,7 @@ impl InitClient<'_> {
         emit!(VrfClientCreated {
             vrf_client: ctx.accounts.state.key(),
             max_result: params.max_result,
+            raffle_list: params.raffle_list,
             timestamp: clock::Clock::get().unwrap().unix_timestamp
         });
 

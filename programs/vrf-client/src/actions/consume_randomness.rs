@@ -53,6 +53,7 @@ impl ConsumeRandomness<'_> {
             emit!(VrfClientUpdated {
                 vrf_client: ctx.accounts.state.key(),
                 max_result: state.max_result,
+                raffle_list: state.raffle_list,
                 result: state.result,
                 result_buffer: result_buffer,
                 timestamp: state.timestamp,

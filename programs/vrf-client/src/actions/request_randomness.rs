@@ -82,6 +82,7 @@ impl RequestRandomness<'_> {
         let client_state = ctx.accounts.state.load()?;
         let bump = client_state.bump.clone();
         let max_result = client_state.max_result;
+        let raffle_list: Pubkey = client_state.raffle_list;
         drop(client_state);
 
         let switchboard_program = ctx.accounts.switchboard_program.to_account_info();
@@ -118,6 +119,7 @@ impl RequestRandomness<'_> {
         emit!(RandomnessRequested {
             vrf_client: ctx.accounts.state.key(),
             max_result: max_result,
+            raffle_list: raffle_list,
             timestamp: clock::Clock::get().unwrap().unix_timestamp
         });
 
