@@ -9,6 +9,8 @@ import { BN } from "bn.js";
 import { PermissionAccount, QueueAccount, SwitchboardProgram, VrfAccount } from "@switchboard-xyz/solana.js";
 import { Connection } from "@solana/web3.js";
 
+const DEFAULT_COMMITMENT = "confirmed";
+
 
 describe("vrf-client", async () => {
   try {
@@ -51,24 +53,6 @@ describe("vrf-client", async () => {
     );
 
     console.log("BERKİNG")
-    /* const [queueAccount, txnSignature] = await QueueAccount.create(switchboard, {
-      name: 'My Queue',
-      metadata: 'Top secret',
-      queueSize: 100,
-      reward: 0.00001337,
-      minStake: 10,
-      oracleTimeout: 60,
-      slashingEnabled: false,
-      unpermissionedFeeds: true,
-      unpermissionedVrf: true,
-      enableBufferRelayers: false,
-    });
-
-    await queueAccount.isReady();
-  
-    console.log(`Transaction signature of queue Account: ${txnSignature}`)
-  
-    const queue = await queueAccount.loadData(); */
 
     const [queueAccount, txnSignature] = await QueueAccount.load(switchboard, "F8ce7MsckeZAbAGmxjJNetxYXQa9mKr9nnrC3qKubyYy")
 
