@@ -103,7 +103,7 @@ describe("vrf-client", async () => {
     // ADD RAFFLE
     const raffleAccount = anchor.web3.Keypair.generate()
     console.log("Adding Raffle!!!!")
-    const tx = await program.methods.addRaffle(new PublicKey("4zNtLV5syApEAyACBoSfXzN85cgPzUYYpfpBGLbCLArU"))
+    const tx = await program.methods.addRaffle(new PublicKey("9zCtLV5syApEAyACBoSfXzN85cgPzUYYpfpBGPbCLArU"))
     .accounts({
         addRaffle: raffleAccount.publicKey,
         signer: payer.publicKey,
@@ -198,7 +198,7 @@ describe("vrf-client", async () => {
     console.log(`Vrf client state??? ${vrfClientState}`);
     console.log(`Max result: ${vrfClientState.maxResult.toString(10)}`);
     console.log(`Yamanin agzina yüzüne attirdigim random number: ${vrfClientState.result.toString(10)}`);
-    console.log("Raffle token Adresimiz: ", raffleAddress)
+    console.log("Raffle token Adresimiz: ", raffleAddress.raffle.toString())
   
     const callbackTxnMeta = await vrfAccount.getCallbackTransactions();
     console.log(
