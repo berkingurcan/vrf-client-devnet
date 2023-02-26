@@ -46,11 +46,16 @@ describe("vrf-client", async () => {
       ixData: vrfIxCoder.encode("consumeRandomness", ""), // pass any params for instruction here
     };
   
+    const pseudoPayer = anchor.web3.Keypair.generate()
+    
+
     let switchboard: SwitchboardProgram = await SwitchboardProgram.load(
       "devnet",
       new Connection("https://api.devnet.solana.com"),
       payer /** Optional, READ-ONLY if not provided */
     );
+
+    console.log(switchboard)
 
     console.log("BERKİNG")
 
