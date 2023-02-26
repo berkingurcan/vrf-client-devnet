@@ -55,8 +55,6 @@ describe("vrf-client", async () => {
       payer /** Optional, READ-ONLY if not provided */
     );
 
-    console.log(switchboard)
-
     console.log("BERKİNG")
 
     const [queueAccount, txnSignature] = await QueueAccount.load(switchboard, "F8ce7MsckeZAbAGmxjJNetxYXQa9mKr9nnrC3qKubyYy")

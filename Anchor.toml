@@ -5,7 +5,7 @@ skip-lint = false
 vrf_client = "EmEvpcSsVwZ3VVuQEKiqiGNBYEDy52TBVz1WULdccjzA"
 
 [registry]
-url = "https://api.apr.dev"
+url = "https://api.devnet.solana.com"
 
 [provider]
 cluster = "devnet"
