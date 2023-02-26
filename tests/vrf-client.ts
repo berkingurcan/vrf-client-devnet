@@ -7,7 +7,7 @@ import { VrfClient } from "../target/types/vrf_client";
 import { assert } from "chai";
 import { BN } from "bn.js";
 import { PermissionAccount, QueueAccount, SwitchboardProgram, VrfAccount } from "@switchboard-xyz/solana.js";
-import { Connection } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 
 const DEFAULT_COMMITMENT = "confirmed";
 
@@ -18,7 +18,7 @@ describe("vrf-client", async () => {
       require("fs").readFileSync("./target/idl/vrf_client.json", "utf8")
     );
   
-    const programId = new anchor.web3.PublicKey("EmEvpcSsVwZ3VVuQEKiqiGNBYEDy52TBVz1WULdccjzA")
+    const programId = new anchor.web3.PublicKey("4zNtLV5syApEAyZRJoSfXzN85cgPzUYYpfpBGLbCLArU")
   
     const provider = AnchorProvider.env();
     anchor.setProvider(provider);
@@ -99,6 +99,24 @@ describe("vrf-client", async () => {
     console.log(`Created VrfClient Account: ${vrfClientKey}`);
   
     console.log("Now requestin randomness sectionnnnnn hadi!!!");
+
+    // ADD RAFFLE
+    const raffleAccount = anchor.web3.Keypair.generate()
+    console.log("Adding Raffle!!!!")
+    const tx = await program.methods.addRaffle(new PublicKey("4zNtLV5syApEAyACBoSfXzN85cgPzUYYpfpBGLbCLArU"))
+    .accounts({
+        addRaffle: raffleAccount.publicKey,
+        signer: payer.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+    })
+    .signers([raffleAccount])
+    .rpc()
+    console.log("Transaction signatur: ", tx)
+
+    const raffleAddress = await program.account.raffleAccount.fetch(raffleAccount.publicKey)
+    console.log("Adresimiz: ", raffleAddress)
+
+
     // REQUEST RANDOMNESSSSSSSSSSSSSSSSSSSSSSSSSSSS
     const queue = await queueAccount.loadData();
     const vrf = await vrfAccount.loadData();
@@ -180,6 +198,7 @@ describe("vrf-client", async () => {
     console.log(`Vrf client state??? ${vrfClientState}`);
     console.log(`Max result: ${vrfClientState.maxResult.toString(10)}`);
     console.log(`Yamanin agzina yüzüne attirdigim random number: ${vrfClientState.result.toString(10)}`);
+    console.log("Raffle token Adresimiz: ", raffleAddress)
   
     const callbackTxnMeta = await vrfAccount.getCallbackTransactions();
     console.log(
