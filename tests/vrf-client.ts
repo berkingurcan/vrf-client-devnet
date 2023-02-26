@@ -18,7 +18,7 @@ describe("vrf-client", async () => {
       require("fs").readFileSync("./target/idl/vrf_client.json", "utf8")
     );
   
-    const programId = new anchor.web3.PublicKey("EmEvpcSsVwZ3VVuQEKiqiGNBYEDy52TBVz1WULdccjzA")
+    const programId = new anchor.web3.PublicKey("7bSz1sxRGdfBNTeRfWpipjYMN11YbZxJFK6jxNBBeZyN")
   
     const provider = AnchorProvider.env();
     anchor.setProvider(provider);
@@ -34,6 +34,14 @@ describe("vrf-client", async () => {
       program.programId
     );
     console.log(`VRF Client: ${vrfClientKey}`);
+
+    let raffleSecret = anchor.web3.Keypair.generate()
+    const [raffleClientKey] = anchor.utils.publicKey.findProgramAddressSync(
+      [Buffer.from("raffle_list"), vrfClientKey.toBytes()],
+      program.programId
+    )
+
+    console.log("RAFFLE CLIENT KEY: ", raffleClientKey)
   
     const vrfIxCoder = new anchor.BorshInstructionCoder(program.idl);
     const vrfClientCallback: sbv2.Callback = {
@@ -95,8 +103,29 @@ describe("vrf-client", async () => {
       
     console.log(`Created VrfClient Account: ${vrfClientKey}`);
   
-    console.log("Now requestin randomness sectionnnnnn hadi!!!");
+    console.log("adding raffle addresss")
+    // ADD RAFFLE LIST
+
+    const ix = await program.methods.addRaffleList(
+      "GULp1LwzB7jxHmRCJNVLgV9ewEWS93xdNgwHWkVjt3vN"
+    )
+    .accounts({
+      signer: payer.publicKey,
+      raffleList: raffleClientKey,
+      vrfClient: vrfClientKey,
+      systemProgram: anchor.web3.SystemProgram.programId,
+    })
+
+    const raffleListAddress = (await ix.pubkeys()).raffleList
+    const tx = await ix.rpc()
+    console.log("Your transaction signature", tx);
+
+    const raffleAddress = await program.account.RaffleList.fetch(raffleList)
+    console.log("Raffle address is that:", raffleAddress)
+
     // REQUEST RANDOMNESSSSSSSSSSSSSSSSSSSSSSSSSSSS
+    console.log("Now requestin randomness sectionnnnnn hadi!!!");
+
     const queue = await queueAccount.loadData();
     const vrf = await vrfAccount.loadData();
     console.log(`WTF is vrf ${vrf}`);
@@ -177,6 +206,7 @@ describe("vrf-client", async () => {
     console.log(`Vrf client state??? ${vrfClientState}`);
     console.log(`Max result: ${vrfClientState.maxResult.toString(10)}`);
     console.log(`Yamanin agzina yüzüne attirdigim random number: ${vrfClientState.result.toString(10)}`);
+    console.log("Raffle address is that:", raffleAddress)
   
     const callbackTxnMeta = await vrfAccount.getCallbackTransactions();
     console.log(

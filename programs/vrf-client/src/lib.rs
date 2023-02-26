@@ -9,7 +9,7 @@ pub use switchboard_v2::{
     OracleQueueAccountData, PermissionAccountData, SbState, VrfAccountData, VrfRequestRandomness,
 };
 
-declare_id!("EmEvpcSsVwZ3VVuQEKiqiGNBYEDy52TBVz1WULdccjzA");
+declare_id!("7bSz1sxRGdfBNTeRfWpipjYMN11YbZxJFK6jxNBBeZyN");
 
 #[program]
 pub mod vrf_client {
@@ -18,6 +18,16 @@ pub mod vrf_client {
     #[access_control(ctx.accounts.validate(&ctx, &params))]
     pub fn init_client(ctx: Context<InitClient>, params: InitClientParams) -> Result<()> {
         InitClient::actuate(&ctx, &params)
+    }
+
+    pub fn add_raffle_list(ctx: Context<AddRaffleList>, raffle_list: String) -> Result<()> {
+        let raffle_account_data= &mut ctx.accounts.raffle_list;
+        raffle_account_data.bump = *ctx.bumps.get("raffle_list").unwrap();
+
+        raffle_account_data.raffle_list = raffle_list.to_owned();
+
+        msg!("Added Raffle List for {}", raffle_list);
+        Ok(())
     }
 
     #[access_control(ctx.accounts.validate(&ctx, &params))]
@@ -49,6 +59,30 @@ pub struct VrfClientState {
     pub result: u128,
     pub timestamp: i64,
     pub vrf: Pubkey,
+}
+
+#[account]
+pub struct RaffleList {
+    pub raffle_list: String,
+    pub bump: u8,
+}
+
+#[derive(Accounts)]
+pub struct AddRaffleList<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+
+    #[account(
+        init,
+        payer = payer,
+        space = 4 + 8 + 32 + 1,
+        seeds = ["raffle_list".as_bytes(), vrf_client.key().as_ref()],
+        bump,
+    )]
+    pub raffle_list: Account<'info, RaffleList>,
+    #[account(mut)]
+    pub vrf_client: AccountLoader<'info, VrfClientState>,
+    pub system_program: Program<'info, System>,
 }
 
 #[error_code]
