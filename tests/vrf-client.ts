@@ -18,7 +18,7 @@ describe("vrf-client", async () => {
       require("fs").readFileSync("./target/idl/vrf_client.json", "utf8")
     );
   
-    const programId = new anchor.web3.PublicKey("4zNtLV5syApEAyZRJoSfXzN85cgPzUYYpfpBGLbCLArU")
+    const programId = new anchor.web3.PublicKey("9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK")
   
     const provider = AnchorProvider.env();
     anchor.setProvider(provider);

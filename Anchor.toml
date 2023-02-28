@@ -2,7 +2,7 @@
 seeds = false
 skip-lint = false
 [programs.devnet]
-vrf_client = "4zNtLV5syApEAyZRJoSfXzN85cgPzUYYpfpBGLbCLArU"
+vrf_client = "9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK"
 
 [registry]
 url = "https://api.devnet.solana.com"

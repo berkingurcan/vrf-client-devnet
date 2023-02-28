@@ -9,7 +9,7 @@ pub use switchboard_v2::{
     OracleQueueAccountData, PermissionAccountData, SbState, VrfAccountData, VrfRequestRandomness,
 };
 
-declare_id!("4zNtLV5syApEAyZRJoSfXzN85cgPzUYYpfpBGLbCLArU");
+declare_id!("9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK");
 
 #[program]
 pub mod vrf_client {
