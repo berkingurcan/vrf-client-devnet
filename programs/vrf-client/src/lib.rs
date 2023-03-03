@@ -9,7 +9,7 @@ pub use switchboard_v2::{
     OracleQueueAccountData, PermissionAccountData, SbState, VrfAccountData, VrfRequestRandomness,
 };
 
-declare_id!("9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK");
+declare_id!("Dfcq8iteAfYXE1WdxEjSqtanDjHvLnKU8FXiFuCdtszh");
 
 #[program]
 pub mod vrf_client {
@@ -54,6 +54,7 @@ pub struct VrfClientState {
     pub result: u128,
     pub timestamp: i64,
     pub vrf: Pubkey,
+    pub raffle_address: Pubkey,
 }
 
 #[account]
@@ -100,6 +101,7 @@ pub struct RandomnessRequested {
     pub vrf_client: Pubkey,
     pub max_result: u64,
     pub timestamp: i64,
+    pub raffle_address: Pubkey,
 }
 
 #[event]

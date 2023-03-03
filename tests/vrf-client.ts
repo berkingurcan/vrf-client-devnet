@@ -18,7 +18,7 @@ describe("vrf-client", async () => {
       require("fs").readFileSync("./target/idl/vrf_client.json", "utf8")
     );
   
-    const programId = new anchor.web3.PublicKey("9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK")
+    const programId = new anchor.web3.PublicKey("Dfcq8iteAfYXE1WdxEjSqtanDjHvLnKU8FXiFuCdtszh")
   
     const provider = AnchorProvider.env();
     anchor.setProvider(provider);
@@ -158,6 +158,7 @@ describe("vrf-client", async () => {
       .requestRandomness({
         switchboardStateBump: switchboard.programState.bump,
         permissionBump,
+        raffleAddress: new PublicKey("9zCtLV5syApEAyACBoSfXzN85cgPzUYYpfpBGPbCLArU"),
       })
       .accounts({
         state: vrfClientKey,
@@ -199,6 +200,7 @@ describe("vrf-client", async () => {
     console.log(`Max result: ${vrfClientState.maxResult.toString(10)}`);
     console.log(`Yamanin agzina yüzüne attirdigim random number: ${vrfClientState.result.toString(10)}`);
     console.log("Raffle token Adresimiz: ", raffleAddress.raffle.toString())
+    console.log("yeni RAFFLE ADRES =", vrfClientState.raffleAddress.toString())
   
     const callbackTxnMeta = await vrfAccount.getCallbackTransactions();
     console.log(

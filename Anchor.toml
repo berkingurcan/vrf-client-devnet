@@ -2,14 +2,14 @@
 seeds = false
 skip-lint = false
 [programs.devnet]
-vrf_client = "9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK"
+vrf_client = "Dfcq8iteAfYXE1WdxEjSqtanDjHvLnKU8FXiFuCdtszh"
 
 [registry]
 url = "https://api.devnet.solana.com"
 
 [provider]
 cluster = "devnet"
-wallet = "~/.config/solana/devnet-test.json"
+wallet = "~/.config/solana/devnet.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
