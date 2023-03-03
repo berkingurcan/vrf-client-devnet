@@ -71,6 +71,7 @@ pub struct RequestRandomness<'info> {
 pub struct RequestRandomnessParams {
     pub permission_bump: u8,
     pub switchboard_state_bump: u8,
+    pub raffle_address: Pubkey,
 }
 
 impl RequestRandomness<'_> {
@@ -114,11 +115,13 @@ impl RequestRandomness<'_> {
 
         let mut client_state = ctx.accounts.state.load_mut()?;
         client_state.result = 0;
+        client_state.raffle_address = params.raffle_address;
 
         emit!(RandomnessRequested {
             vrf_client: ctx.accounts.state.key(),
             max_result: max_result,
-            timestamp: clock::Clock::get().unwrap().unix_timestamp
+            timestamp: clock::Clock::get().unwrap().unix_timestamp,
+            raffle_address: params.raffle_address,
         });
 
         msg!("randomness requested successfully");

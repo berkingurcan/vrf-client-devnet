@@ -18,7 +18,7 @@ describe("vrf-client", async () => {
       require("fs").readFileSync("./target/idl/vrf_client.json", "utf8")
     );
   
-    const programId = new anchor.web3.PublicKey("9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK")
+    const programId = new anchor.web3.PublicKey("69W68uVcnzFLXSSs8AoaGoLSp9TX4an4DXb9z25MX5Ji")
   
     const provider = AnchorProvider.env();
     anchor.setProvider(provider);
@@ -100,21 +100,7 @@ describe("vrf-client", async () => {
   
     console.log("Now requestin randomness sectionnnnnn hadi!!!");
 
-    // ADD RAFFLE
-    const raffleAccount = anchor.web3.Keypair.generate()
-    console.log("Adding Raffle!!!!")
-    const tx = await program.methods.addRaffle(new PublicKey("9zCtLV5syApEAyACBoSfXzN85cgPzUYYpfpBGPbCLArU"))
-    .accounts({
-        addRaffle: raffleAccount.publicKey,
-        signer: payer.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId,
-    })
-    .signers([raffleAccount])
-    .rpc()
-    console.log("Transaction signatur: ", tx)
-
-    const raffleAddress = await program.account.raffleAccount.fetch(raffleAccount.publicKey)
-    console.log("Adresimiz: ", raffleAddress)
+    // ADD RAFFLE DELETED
 
 
     // REQUEST RANDOMNESSSSSSSSSSSSSSSSSSSSSSSSSSSS
@@ -158,6 +144,7 @@ describe("vrf-client", async () => {
       .requestRandomness({
         switchboardStateBump: switchboard.programState.bump,
         permissionBump,
+        raffleAddress: new PublicKey("9zCtLV5syApEAyACBoSfXzN85cgPzUYYpfpBGPbCLArU"),
       })
       .accounts({
         state: vrfClientKey,
@@ -198,7 +185,7 @@ describe("vrf-client", async () => {
     console.log(`Vrf client state??? ${vrfClientState}`);
     console.log(`Max result: ${vrfClientState.maxResult.toString(10)}`);
     console.log(`Yamanin agzina yüzüne attirdigim random number: ${vrfClientState.result.toString(10)}`);
-    console.log("Raffle token Adresimiz: ", raffleAddress.raffle.toString())
+    console.log("yeni RAFFLE ADRES =", vrfClientState.raffleAddress.toString())
   
     const callbackTxnMeta = await vrfAccount.getCallbackTransactions();
     console.log(

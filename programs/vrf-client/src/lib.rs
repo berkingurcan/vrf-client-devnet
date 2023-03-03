@@ -9,7 +9,7 @@ pub use switchboard_v2::{
     OracleQueueAccountData, PermissionAccountData, SbState, VrfAccountData, VrfRequestRandomness,
 };
 
-declare_id!("9Xg3Ey13GG3aEq7DiTYXQJQB4mzqNZ6Cj6UKNcgJdbVK");
+declare_id!("69W68uVcnzFLXSSs8AoaGoLSp9TX4an4DXb9z25MX5Ji");
 
 #[program]
 pub mod vrf_client {
@@ -18,11 +18,6 @@ pub mod vrf_client {
     #[access_control(ctx.accounts.validate(&ctx, &params))]
     pub fn init_client(ctx: Context<InitClient>, params: InitClientParams) -> Result<()> {
         InitClient::actuate(&ctx, &params)
-    }
-
-    pub fn add_raffle(ctx: Context<AddRaffle>, raffle: Pubkey) -> Result<()> {
-        ctx.accounts.add_raffle.raffle = raffle;
-        Ok(())
     }
 
     #[access_control(ctx.accounts.validate(&ctx, &params))]
@@ -54,26 +49,9 @@ pub struct VrfClientState {
     pub result: u128,
     pub timestamp: i64,
     pub vrf: Pubkey,
+    pub raffle_address: Pubkey,
 }
 
-#[account]
-#[derive(Default)]
-pub struct RaffleAccount {
-    pub raffle: Pubkey
-}
-
-#[derive(Accounts)]
-pub struct AddRaffle<'info> {
-    #[account(
-        init,
-        payer = signer,
-        space = 1024,
-    )]
-    pub add_raffle: Account<'info, RaffleAccount>,
-    #[account(mut)]
-    pub signer: Signer<'info>,
-    pub system_program: Program<'info, System>,
-}
 
 #[error_code]
 #[derive(Eq, PartialEq)]
@@ -100,6 +78,7 @@ pub struct RandomnessRequested {
     pub vrf_client: Pubkey,
     pub max_result: u64,
     pub timestamp: i64,
+    pub raffle_address: Pubkey,
 }
 
 #[event]
