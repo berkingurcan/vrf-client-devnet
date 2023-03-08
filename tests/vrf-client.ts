@@ -18,7 +18,7 @@ describe("vrf-client", async () => {
       require("fs").readFileSync("./target/idl/vrf_client.json", "utf8")
     );
   
-    const programId = new anchor.web3.PublicKey("69W68uVcnzFLXSSs8AoaGoLSp9TX4an4DXb9z25MX5Ji")
+    const programId = new anchor.web3.PublicKey("5MqwGGZdRF9ukMZWK6kNTPLvHRxMZsWLZYmEeqTWJWWf")
   
     const provider = AnchorProvider.env();
     anchor.setProvider(provider);
@@ -180,6 +180,7 @@ describe("vrf-client", async () => {
       vrfClientKey
     );
     console.log("VRF CLIENT STATE IS COMIIING")
+    console.log(vrfClientState)
     console.log(vrfClientState)
   
     console.log(`Vrf client state??? ${vrfClientState}`);

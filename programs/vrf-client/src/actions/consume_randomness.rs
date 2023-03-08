@@ -44,6 +44,7 @@ impl ConsumeRandomness<'_> {
         msg!("u128 buffer {:?}", value);
         let result = value[0] % max_result as u128 + 1;
         msg!("Current VRF Value [1 - {}) = {}!", max_result, result);
+        msg!("Raffle Address is: {}", state.raffle_address);
 
         if state.result != result {
             state.result_buffer = result_buffer;
@@ -56,6 +57,12 @@ impl ConsumeRandomness<'_> {
                 result: state.result,
                 result_buffer: result_buffer,
                 timestamp: state.timestamp,
+                raffle_address: state.raffle_address,
+            });
+
+            emit!(RaffleRandomnessCreated {
+                raffle_address: state.raffle_address,
+                result: state.result,
             });
         }
 

@@ -125,6 +125,7 @@ impl RequestRandomness<'_> {
         });
 
         msg!("randomness requested successfully");
+        msg!("Randomnes requested for the raffle {}", params.raffle_address);
         Ok(())
     }
 }
